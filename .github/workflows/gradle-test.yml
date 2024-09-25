@@ -118,3 +118,11 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           detailed_summary: true
           check_name: JUnit Test Report ${{ inputs.subproject || ''}}
+
+      - name: Display Test Report XML
+        if: success() || failure() # Spustí se vždy, nezávisle na výsledku předchozích kroků
+        run: |
+          for file in $(find build/test-results/test -name 'TEST-*.xml'); do
+            echo "Displaying $file:"
+            cat "$file"
+          done
