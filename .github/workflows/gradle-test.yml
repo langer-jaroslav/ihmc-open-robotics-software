@@ -1,0 +1,120 @@
+name: Gradle test
+
+on:
+  workflow_call:
+    secrets:
+      ROSIE_PERSONAL_ACCESS_TOKEN:
+        description: 'Personal access token'
+        required: false
+    inputs:
+      extra-repos:
+        required: false
+        type: string
+        description: 'JSON array of repositories to checkout, repos are required to be in the ihmcrobotics org. Do not include ihmcrobotics in the name.'
+        default: '[""]'
+      subproject:
+        required: false
+        type: string
+        description: 'Sub project name'
+      test-category:
+        required: false
+        type: string
+        description: 'Test category'
+        default: 'fast'
+      requires-self-hosted:
+        required: false
+        type: boolean
+        description: 'Set to true to use a self-hosted runner, false for ubuntu-latest'
+        default: false
+
+jobs:
+  build:
+    runs-on: ${{ inputs.requires-self-hosted && 'self-hosted' || 'ubuntu-latest' }}
+    container:
+      image: ${{ inputs.requires-self-hosted && 'ihmcrobotics/ihmc-runner-nvidia:1.0.1' || 'ihmcrobotics/ihmc-runner:1.0.0' }}
+      options: ${{ inputs.requires-self-hosted && '--runtime=nvidia --gpus all --cpus 4' || '--cpus 4' }}
+    steps:
+      # Checkout repository-group
+      - name: Checkout repository-group
+        uses: actions/checkout@v4
+        with:
+          repository: ihmcrobotics/repository-group
+          ref: develop
+          path: repository-group
+          lfs: false
+
+      # Checkout current repo
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: repository-group/${{ github.event.repository.name }}
+          lfs: false
+
+      - name: Checkout extra repos
+        env:
+          REPOS: ${{ inputs.extra-repos }}
+          CURRENT_REF: ${{ github.ref_name }}
+          ROSIE_PERSONAL_ACCESS_TOKEN: ${{ secrets.ROSIE_PERSONAL_ACCESS_TOKEN }}
+        run: |
+          # Parse JSON input and generate repo list
+          REPO_LIST=$(echo "$REPOS" | jq -r '.[]')
+          
+          # Checkout each repository
+          for repo in $REPO_LIST; do
+            echo "Checking out $repo"
+            if [ -n "$ROSIE_PERSONAL_ACCESS_TOKEN" ]; then
+              echo "Using ihmc-rosie personal access token to clone $repo"
+              git clone https://"$ROSIE_PERSONAL_ACCESS_TOKEN"@github.com/ihmcrobotics/$repo.git repository-group/$repo
+            else
+              git clone https://github.com/ihmcrobotics/$repo.git repository-group/$repo
+            fi
+            cd repository-group/$repo
+          
+            # Try to checkout the current ref
+            if git rev-parse --verify $CURRENT_REF >/dev/null 2>&1; then
+              git checkout $CURRENT_REF
+            else
+              echo "Ref $CURRENT_REF not found in $repo, checking out develop"
+              git checkout develop || echo "Failed to checkout develop for $repo"
+            fi
+          
+            cd ../../
+          done
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10.2"
+
+      - name: Gradle test
+        env:
+          SUBPROJECT: ${{ inputs.subproject }}
+          CURRENT_REPO: ${{ github.event.repository.name }}
+          TEST_CATEGORY: ${{ inputs.test-category }}
+        run: |
+          if [ -n "$SUBPROJECT" ]; then
+            echo "Using subproject: $SUBPROJECT"
+            cd repository-group/$CURRENT_REPO/$SUBPROJECT
+          else
+            cd repository-group/$CURRENT_REPO
+          fi
+          
+          git lfs install --local
+          git lfs fetch
+          git lfs pull
+          
+          gradle test -Pcategory=$TEST_CATEGORY --no-daemon -PrunningOnCIServer=true -Dorg.gradle.jvmargs="-Xmx4G"
+
+      - name: Publish Test Report - ${{ inputs.test-category }}
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          detailed_summary: true
+          check_name: JUnit Test Report ${{ inputs.subproject || ''}}
