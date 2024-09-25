@@ -9,8 +9,8 @@ permissions:
 
 jobs:
   atlas:
-    uses: ihmcrobotics/ihmc-actions/.github/workflows/gradle-test.yml@main
+    uses: .github/workflows/gradle-test.yml@develop
     with:
-      subproject: 'atlas'
+      subproject: 'ihmc-robotics-toolkit'
       test-category: 'fast'
       requires-self-hosted: true  
