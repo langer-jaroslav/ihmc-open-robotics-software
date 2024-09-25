@@ -1,4 +1,4 @@
-name: Gradle test (fast)
+name: Gradle test (fast) experimental
 
 on:
   workflow_dispatch
