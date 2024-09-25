@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  atlas:
+  ihmc-robotics-toolkit:
     uses: langer-jaroslav/ihmc-open-robotics-software/.github/workflows/gradle-test.yml@develop
     with:
       subproject: 'ihmc-robotics-toolkit'
