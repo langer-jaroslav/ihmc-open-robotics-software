@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   atlas:
-    uses: gradle-test.yml@develop
+    uses: langer-jaroslav/ihmc-open-robotics-software/.github/workflows/gradle-test.yml@develop
     with:
       subproject: 'ihmc-robotics-toolkit'
       test-category: 'fast'
