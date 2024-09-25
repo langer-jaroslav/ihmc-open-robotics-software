@@ -13,5 +13,4 @@ jobs:
     with:
       subproject: 'atlas'
       test-category: 'fast'
-      requires-self-hosted: true
   
