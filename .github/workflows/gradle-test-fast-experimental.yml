@@ -1,0 +1,21 @@
+name: Gradle test (fast)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+  pull_request:
+
+permissions:
+  checks: write
+  contents: read
+
+jobs:
+  atlas:
+    uses: ihmcrobotics/ihmc-actions/.github/workflows/gradle-test.yml@main
+    with:
+      subproject: 'atlas'
+      test-category: 'fast'
+      requires-self-hosted: true
+  
