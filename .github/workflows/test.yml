@@ -9,4 +9,7 @@ jobs:
       
     steps:
     - uses: actions/checkout@v4   
+
+    - name: docker test
+      run: docker run hello-world
   
