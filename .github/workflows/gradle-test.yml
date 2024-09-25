@@ -31,8 +31,8 @@ jobs:
   build:
     runs-on: ${{ inputs.requires-self-hosted && 'self-hosted' || 'ubuntu-latest' }}
     container:
-      image: ${{ inputs.requires-self-hosted && 'ihmcrobotics/ihmc-runner-nvidia:1.0.1' || 'ihmcrobotics/ihmc-runner:1.0.0' }}
-      options: ${{ inputs.requires-self-hosted && '--runtime=nvidia --gpus all --cpus 4' || '--cpus 4' }}
+      image: 'ihmcrobotics/ihmc-runner-nvidia:1.0.1'
+      options: '--cpus 4'
     steps:
       # Checkout repository-group
       - name: Checkout repository-group
