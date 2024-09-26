@@ -121,7 +121,5 @@ jobs:
 
       - name: Display Test Report XML
         if: success() || failure() # Spustí se vždy, nezávisle na výsledku předchozích kroků
-        run: |
-          ls './${{ inputs.subproject }}/'
-          ls './${{ inputs.subproject }}/build/test-results/test/'
+        run: find . -type f -name "TEST-*.xml"'
           
