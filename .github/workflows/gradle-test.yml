@@ -121,5 +121,5 @@ jobs:
 
       - name: Display Test Report XML
         if: success() || failure() # Spustí se vždy, nezávisle na výsledku předchozích kroků
-        run: ls './'
+        run: ls './${{ github.event.repository.name }}/build/test-results/test/'
           
