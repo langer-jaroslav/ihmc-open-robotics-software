@@ -15,5 +15,6 @@ jobs:
       
     - name: Send JUNIT XML Files to Evergreen API
       uses: ./.github/actions/send-junit-to-api.yml@develop
+      if: success() || failure() # always run even if the previous step fails
       with:
         subproject: ${{ inputs.subproject }}
