@@ -120,7 +120,7 @@ jobs:
           check_name: JUnit Test Report ${{ inputs.subproject || ''}}
 
       - name: Send JUNIT XML Files to Evergreen API
-        uses: ./.github/actions/send-junit-to-api
+        uses: ./.github/workflows/send-junit-to-api.yml
         with:
           subproject: ${{ inputs.subproject }}
           
