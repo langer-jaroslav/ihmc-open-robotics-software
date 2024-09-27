@@ -12,4 +12,8 @@ jobs:
 
     - name: docker test
       run: docker run hello-world
-  
+      
+    - name: Send JUNIT XML Files to Evergreen API
+      uses: ./.github/actions/send-junit-to-api.yml@develop
+      with:
+        subproject: ${{ inputs.subproject }}
