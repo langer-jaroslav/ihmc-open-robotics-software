@@ -8,10 +8,11 @@ jobs:
     runs-on: self-hosted
       
     steps:
-    - uses: actions/checkout@v4   
+    - name: My first step - check out repository
+      uses: actions/checkout@v4 
 
     - name: Send JUNIT XML Files to Evergreen API
-      uses: ./.github/actions/send-junit-to-api/action
+      uses: ./.github/actions/send-junit-to-api
       if: success() || failure() # always run even if the previous step fails
       with:
         subproject: ${{ inputs.subproject }}
