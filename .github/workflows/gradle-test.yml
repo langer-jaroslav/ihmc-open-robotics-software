@@ -132,7 +132,7 @@ jobs:
               curl -X POST \
                 -H "WorkflowRunID: ${{ github.run_id }}" \
                 -F "file=@$file" \
-                http://localhost/api/junitupload.php
+                http://192.168.66.18/api/junitupload.php
             else
               echo "No XML files found matching TEST-*.xml"
             fi
