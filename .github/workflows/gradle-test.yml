@@ -123,5 +123,5 @@ jobs:
         if: success() || failure() # Spustí se vždy, nezávisle na výsledku předchozích kroků
         run: |
           echo "Workflow Run ID: ${{ github.run_id }}"
-          cd repository-group/$CURRENT_REPO/$SUBPROJECT/src/test/build/test-results/test/
+          cd repository-group/${{ github.event.repository.name }}/${{ inputs.subproject }}/src/test/build/test-results/test/
           ls TEST-*.xml         
