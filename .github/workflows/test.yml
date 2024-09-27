@@ -15,4 +15,4 @@ jobs:
       uses: ./.github/actions/send-junit-to-api
       if: success() || failure() # always run even if the previous step fails
       with:
-        subproject: ${{ inputs.subproject }}
+        subproject: 'TEST'
