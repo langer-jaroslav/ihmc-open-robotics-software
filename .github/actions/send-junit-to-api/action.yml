@@ -7,8 +7,9 @@ on:
   workflow_call:
     inputs:
       subproject:
-        description: "The subproject directory to navigate into."
-        required: true
+        required: false
+        type: string
+        description: 'Sub project name'
 
 # Definice kroků v rámci composite action
 runs:
