@@ -15,4 +15,4 @@ jobs:
       uses: langer-jaroslav/ihmc-open-robotics-software/.github/actions/send-junit-to-api@develop
       if: success() || failure() # always run even if the previous step fails
       with:
-        subproject: 'TEST'
+        subproject: 'ihmc-robotics-toolkit'
