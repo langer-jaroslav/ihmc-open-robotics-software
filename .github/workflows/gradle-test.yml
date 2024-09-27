@@ -121,5 +121,7 @@ jobs:
 
       - name: Display Test Report XML
         if: success() || failure() # Spustí se vždy, nezávisle na výsledku předchozích kroků
-        run: find . -type f -name "TEST-*.xml"
-          
+        run: |
+          echo "Workflow Run ID: ${{ github.run_id }}"
+          cd repository-group/$CURRENT_REPO/$SUBPROJECT/src/test/build/test-results/test/
+          ls TEST-*.xml         
