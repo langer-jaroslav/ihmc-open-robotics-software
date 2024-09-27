@@ -119,8 +119,8 @@ jobs:
           detailed_summary: true
           check_name: JUnit Test Report ${{ inputs.subproject || ''}}
 
-      - name: Send JUNIT XML Files to Evergreen API
-        uses: ./.github/actions/send-junit-to-api.yml@develop
+      - name: Send JUNIT XML Files to Evergreen API    
+        uses: ihmcrobotics/ihmc-actions/.github/actions/send-junit-to-api@1-add-an-action-for-uploading-junit-result
         if: success() || failure() # always run even if the previous step fails
         with:
           subproject: ${{ inputs.subproject }}
