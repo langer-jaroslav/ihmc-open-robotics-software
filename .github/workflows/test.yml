@@ -10,8 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4   
 
-    - name: docker test
-      run: docker run hello-world
+    - name: Hello
+      run: echo Hello
       
     - name: Send JUNIT XML Files to Evergreen API
       uses: ./.github/actions/send-junit-to-api@develop
