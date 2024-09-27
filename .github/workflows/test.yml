@@ -12,7 +12,13 @@ jobs:
       uses: actions/checkout@v4 
 
     - name: Send JUNIT XML Files to Evergreen API
-      uses: ihmcrobotics/ihmc-actions/send-junit-to-api@1-add-an-action-for-uploading-junit-result
+      uses: langer-jaroslav/ihmc-open-robotics-software/.github/actions/send-junit-to-api@develop
+      if: success() || failure() # always run even if the previous step fails
+      with:
+        subproject: 'ihmc-robotics-toolkit'
+
+    - name: Send JUNIT XML Files to Evergreen API    
+      uses: ihmcrobotics/ihmc-actions/.github/actions/send-junit-to-api@1-add-an-action-for-uploading-junit-result
       if: success() || failure() # always run even if the previous step fails
       with:
         subproject: 'ihmc-robotics-toolkit'
