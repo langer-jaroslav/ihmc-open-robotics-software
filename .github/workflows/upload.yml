@@ -18,7 +18,7 @@ jobs:
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
             http://evergreen.ihmc.us/api/junituploadX.php)
 
-          http_code=$(curl -X POST \
+          http_code=$(curl -o /dev/null -s -w "%{http_code}\n" -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
             http://evergreen.ihmc.us/api/junituploadX.php)
@@ -32,7 +32,7 @@ jobs:
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
             https://www.file.io/)
 
-          http_code=$(curl -X POST \
+          http_code=$(curl -o /dev/null -s -w "%{http_code}\n" -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
             https://www.file.io/)
