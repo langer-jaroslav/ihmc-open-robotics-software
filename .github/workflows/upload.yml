@@ -14,15 +14,22 @@ jobs:
       - name: Upload file using curl
         run: |          
           exit
+
+          # Define the base URL
+          if [ "${{ contains(runner.labels, 'self-hosted') }}" == "true" ]; then
+            base_url="http://evergreen.ihmc.us"
+          else
+            base_url="https://evergreen.ihmc.us"
+          fi
           response_body=$(curl -L -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
-            https://evergreen.ihmc.us/api/junitupload.php)
+            "$base_url/api/junitupload.php")
 
           http_code=$(curl -o /dev/null -s -w "%{http_code}\n" -L -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
-            https://evergreen.ihmc.us/api/junitupload.php)
+            "$base_url/api/junitupload.php")
             
           echo "HTTP Status Code: $http_code"
           echo "Response Body: $response_body"
