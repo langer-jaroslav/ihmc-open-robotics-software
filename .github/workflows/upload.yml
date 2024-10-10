@@ -16,5 +16,5 @@ jobs:
           curl -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
-            http://evergreen.ihmc.us/api/junitupload.php
+            http://evergreen.ihmc.us/api/junituploadX.php
           
