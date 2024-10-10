@@ -13,29 +13,15 @@ jobs:
 
       - name: Upload file using curl
         run: |          
-          response_body=$(curl -X POST \
+          response_body=$(curl -L -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
             http://evergreen.ihmc.us/api/junituploadX.php)
 
-          http_code=$(curl -o /dev/null -s -w "%{http_code}\n" -X POST \
+          http_code=$(curl -o /dev/null -s -w "%{http_code}\n" -L -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
             -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
             http://evergreen.ihmc.us/api/junituploadX.php)
-            
-          echo "HTTP Status Code: $http_code"
-          echo "Response Body: $response_body"
-
-
-          response_body=$(curl -X POST \
-            -H "WorkflowRunID: ${{ github.run_id }}" \
-            -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
-            https://www.file.io/)
-
-          http_code=$(curl -o /dev/null -s -w "%{http_code}\n" -X POST \
-            -H "WorkflowRunID: ${{ github.run_id }}" \
-            -F "file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml" \
-            https://www.file.io/)
             
           echo "HTTP Status Code: $http_code"
           echo "Response Body: $response_body"
