@@ -1,0 +1,17 @@
+name: Upload File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload file using curl
+        run: |
+          response=$(curl -s -X POST -H "WorkflowRunID: ${{ github.run_id }}" -F 'file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml' http://evergreen.ihmc.us/api/junitupload.php)
+          echo "Upload response: $response"
