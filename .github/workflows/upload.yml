@@ -12,9 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Upload file using curl
-        run: |          
-          exit
-
+        run: |  
           # Define the base URL
           if [ "${{ contains(runner.labels, 'self-hosted') }}" == "true" ]; then
             base_url="http://evergreen.ihmc.us"
