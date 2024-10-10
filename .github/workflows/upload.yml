@@ -21,6 +21,8 @@ jobs:
           fi
 
           echo "Using base URL: $base_url"
+
+          exit 10
           
           response_body=$(curl -L -X POST \
             -H "WorkflowRunID: ${{ github.run_id }}" \
