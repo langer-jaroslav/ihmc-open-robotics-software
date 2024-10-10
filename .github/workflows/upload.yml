@@ -13,5 +13,8 @@ jobs:
 
       - name: Upload file using curl
         run: |
-          response=$(curl -s -X POST -H "WorkflowRunID: ${{ github.run_id }}" -F 'file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml' http://evergreen.ihmc.us/api/junitupload.php)
-          echo "Upload response: $response"
+          curl -s -X POST \ 
+                  -H "WorkflowRunID: ${{ github.run_id }}" \
+                  -F 'file=@./TEST-us.ihmc.perception.cuda.CUDACompressionToolsTest.xml' \
+                  http://evergreen.ihmc.us/api/junitupload.php
+          
